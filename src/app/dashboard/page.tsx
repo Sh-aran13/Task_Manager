@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AppLogo } from '@/app/components/icons';
 import { TaskManager } from '@/app/components/task-manager';
+import { cn } from '@/lib/utils';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -63,7 +64,10 @@ export default function DashboardPage() {
   }
 
   return (
-     <div className="flex flex-col h-full">
+     <div className={cn(
+        "flex flex-col h-full",
+        !loading && "animate-fade-in-up opacity-0"
+     )}>
         <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b">
             <div className="container mx-auto px-4">
                 <div className="flex h-16 items-center justify-between">

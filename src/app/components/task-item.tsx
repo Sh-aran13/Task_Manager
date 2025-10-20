@@ -39,7 +39,7 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }: TaskItemProps) {
   return (
     <Card
       className={cn(
-        'transition-all duration-300',
+        'transition-all duration-300 opacity-0 animate-fade-in-up',
         task.completed
           ? 'bg-accent/40 border-accent'
           : 'bg-card'
