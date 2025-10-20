@@ -41,6 +41,17 @@ export function TaskManager() {
   const handleEdit = (task: Task) => {
     setEditingTask(task);
   };
+  
+  const handleDelete = (id: string) => {
+    const taskToDelete = tasks.find(t => t.id === id);
+    if(taskToDelete) {
+       deleteTask(id);
+        toast({
+            title: 'Task Deleted',
+            description: `The task "${taskToDelete.title}" has been successfully deleted.`,
+        });
+    }
+  };
 
   const isEditOpen = !!editingTask;
   const closeEditDialog = () => setEditingTask(null);
@@ -60,7 +71,7 @@ export function TaskManager() {
             tasks={tasks}
             onToggle={toggleTaskCompletion}
             onEdit={handleEdit}
-            onDelete={deleteTask}
+            onDelete={handleDelete}
             isInitialized={isInitialized}
           />
         </div>
