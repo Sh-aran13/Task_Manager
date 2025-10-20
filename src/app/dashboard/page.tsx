@@ -47,7 +47,7 @@ export default function DashboardPage() {
       title: 'Signed Out',
       description: 'You have been successfully signed out.',
     });
-    router.push('/login');
+    router.push('/');
   };
 
   if (loading) {
@@ -106,7 +106,7 @@ export default function DashboardPage() {
                             <AlertDialogHeader>
                               <AlertDialogTitle>Are you sure you want to sign out?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                You will be returned to the login page.
+                                You will be returned to the home page.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
