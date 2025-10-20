@@ -58,6 +58,7 @@ export default function LoginPage() {
         switch (error.code) {
             case 'auth/user-not-found':
             case 'auth/wrong-password':
+            case 'auth/invalid-credential':
                 errorMessage = 'Invalid email or password.';
                 break;
             case 'auth/invalid-email':
@@ -88,7 +89,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md animate-fade-in-up">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
         </CardHeader>
@@ -128,7 +129,7 @@ export default function LoginPage() {
           </Form>
            <p className="mt-4 text-center text-sm text-muted-foreground">
             Don't have an account?{' '}
-            <Link href="/register" className="font-medium text-primary underline-offset-4 hover:underline">
+            <Link href="/register" className="font-medium text-primary-foreground underline-offset-4 hover:underline">
               Register
             </Link>
           </p>

@@ -87,7 +87,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md animate-fade-in-up">
         <CardHeader>
           <CardTitle className="text-2xl">Create an account</CardTitle>
         </CardHeader>
@@ -127,7 +127,7 @@ export default function RegisterPage() {
           </Form>
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Already have an account?{' '}
-            <Link href="/login" className="font-medium text-primary underline-offset-4 hover:underline">
+            <Link href="/login" className="font-medium text-primary-foreground underline-offset-4 hover:underline">
               Login
             </Link>
           </p>
