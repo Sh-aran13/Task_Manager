@@ -14,17 +14,27 @@ import { useTasks } from '@/app/hooks/use-tasks';
 import { TaskList } from '@/app/components/task-list';
 import { TaskForm } from '@/app/components/task-form';
 import type { Task } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
 
 export function TaskManager() {
   const { tasks, addTask, updateTask, deleteTask, toggleTaskCompletion, isInitialized } = useTasks();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const { toast } = useToast();
 
   const handleSave = (taskData: Omit<Task, 'id' | 'completed'> | Task) => {
     if ('id' in taskData) {
       updateTask(taskData);
+      toast({
+        title: 'Task Updated',
+        description: `The task "${taskData.title}" has been successfully updated.`,
+      });
     } else {
       addTask(taskData);
+      toast({
+        title: 'Task Created',
+        description: `The task "${taskData.title}" has been successfully created.`,
+      });
     }
   };
 
