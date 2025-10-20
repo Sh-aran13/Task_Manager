@@ -19,12 +19,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { AppLogo } from '@/app/components/icons';
 import { TaskManager } from '@/app/components/task-manager';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 export default function DashboardPage() {
   const router = useRouter();
   const auth = getAuth();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -41,6 +43,10 @@ export default function DashboardPage() {
 
   const handleSignOut = async () => {
     await signOut(auth);
+    toast({
+      title: 'Signed Out',
+      description: 'You have been successfully signed out.',
+    });
     router.push('/login');
   };
 
