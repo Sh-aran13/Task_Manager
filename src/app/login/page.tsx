@@ -21,6 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { FirebaseError } from 'firebase/app';
 import Link from 'next/link';
+import { AppLogo } from '@/app/components/icons';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -88,8 +89,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md animate-fade-in-up">
+    <div className="flex min-h-screen w-full items-center justify-center animated-gradient animate-background-pan px-4">
+      <Link href="/" className="absolute top-4 left-4 flex items-center gap-2">
+        <AppLogo />
+        <span className="font-bold">React TaskMaster</span>
+      </Link>
+      <Card className="w-full max-w-md animate-fade-in-up opacity-0 [--animation-delay:200ms]">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
         </CardHeader>
@@ -129,7 +134,7 @@ export default function LoginPage() {
           </Form>
            <p className="mt-4 text-center text-sm text-muted-foreground">
             Don't have an account?{' '}
-            <Link href="/register" className="font-medium text-primary-foreground underline-offset-4 hover:underline">
+            <Link href="/register" className="font-medium text-primary underline-offset-4 hover:underline">
               Register
             </Link>
           </p>
