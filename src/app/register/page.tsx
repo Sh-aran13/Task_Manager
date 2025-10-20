@@ -87,8 +87,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center animated-gradient animate-background-pan px-4">
-      <Link href="/" className="absolute top-4 left-4 flex items-center gap-2">
+    <div className="flex min-h-screen w-full items-center justify-center animated-gradient animate-background-pan px-4 dark">
+      <Link href="/" className="absolute top-4 left-4 flex items-center gap-2 text-primary-foreground">
         <AppLogo />
         <span className="font-bold">React TaskMaster</span>
       </Link>
