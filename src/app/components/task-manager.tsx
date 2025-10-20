@@ -10,7 +10,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { AppLogo } from '@/app/components/icons';
 import { useTasks } from '@/app/hooks/use-tasks';
 import { TaskList } from '@/app/components/task-list';
 import { TaskForm } from '@/app/components/task-form';
@@ -38,34 +37,24 @@ export function TaskManager() {
 
   return (
     <div className="flex flex-col h-full">
-      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <AppLogo className="h-7 w-7" />
-              <h1 className="text-xl font-bold tracking-tight">React TaskMaster</h1>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-3xl mx-auto">
+           <div className="flex items-center justify-between mb-6">
+                <h1 className="text-3xl font-bold tracking-tight">My Tasks</h1>
+                <Button onClick={() => setIsCreateOpen(true)}>
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Task
+                </Button>
             </div>
-            <Button onClick={() => setIsCreateOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Create Task
-            </Button>
-          </div>
+          <TaskList
+            tasks={tasks}
+            onToggle={toggleTaskCompletion}
+            onEdit={handleEdit}
+            onDelete={deleteTask}
+            isInitialized={isInitialized}
+          />
         </div>
-      </header>
-
-      <main className="flex-1 overflow-y-auto">
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-3xl mx-auto">
-            <TaskList
-              tasks={tasks}
-              onToggle={toggleTaskCompletion}
-              onEdit={handleEdit}
-              onDelete={deleteTask}
-              isInitialized={isInitialized}
-            />
-          </div>
-        </div>
-      </main>
+      </div>
 
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
         <DialogContent className="sm:max-w-[625px]">
