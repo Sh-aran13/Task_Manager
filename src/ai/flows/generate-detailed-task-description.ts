@@ -9,7 +9,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import {generate} from 'genkit/ai';
+import {generate} from 'genkit';
 
 const GenerateDetailedTaskDescriptionInputSchema = z.object({
   taskTitle: z.string().describe('The title of the task.'),
@@ -22,16 +22,13 @@ export async function generateDetailedTaskDescription(
   input: GenerateDetailedTaskDescriptionInput
 ): Promise<string> {
   const llmResponse = await generate({
-    model: 'googleai/gemini-2.5-flash',
+    model: 'googleai/gemini-pro',
     prompt: `You are an AI assistant that generates detailed descriptions for tasks based on their titles.
 
   Task Title: ${input.taskTitle}
 
   Detailed Description:`,
-    output: {
-      format: 'text',
-    },
   });
 
-  return llmResponse.output() || '';
+  return llmResponse.text;
 }
