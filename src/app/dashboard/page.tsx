@@ -3,7 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAuth, onAuthStateChanged, signOut, type User } from 'firebase/auth';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AppLogo } from '@/app/components/icons';
 import { TaskManager } from '@/app/components/task-manager';
@@ -79,9 +90,27 @@ export default function DashboardPage() {
                         <span className="text-sm text-muted-foreground hidden sm:inline">
                             {user?.email}
                         </span>
-                        <Button variant="outline" onClick={handleSignOut}>
-                            Sign Out
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="outline">
+                                Sign Out
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure you want to sign out?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                You will be returned to the login page.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={handleSignOut} className={buttonVariants({ variant: 'destructive' })}>
+                                Sign Out
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                     </div>
                 </div>
             </div>
