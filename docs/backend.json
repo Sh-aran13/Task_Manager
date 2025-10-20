@@ -1,1 +1,76 @@
-{"entities":{"UserProfile":{"title":"User Profile","description":"A user's public profile information.","type":"object","properties":{"displayName":{"type":"string","description":"The user's display name."},"photoURL":{"type":"string","description":"The URL of the user's profile photo.","format":"uri"}}}},"auth":{"providers":["anonymous","google.com","email"]},"firestore":{"/users/{userId}":{"schema":{"$ref":"#/backend/entities/UserProfile"},"description":"A collection of all user profiles."}}}
+{
+  "entities": {
+    "Task": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Task",
+      "type": "object",
+      "description": "Represents a task in the TaskMaster application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Task entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the task."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the task, potentially AI-enhanced."
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "The date and time when the task is due.",
+          "format": "date-time"
+        },
+        "priority": {
+          "type": "string",
+          "description": "The priority level of the task (e.g., High, Medium, Low)."
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Indicates whether the task has been completed."
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "dueDate",
+        "priority",
+        "completed"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}/tasks/{taskId}",
+        "definition": {
+          "entityName": "Task",
+          "schema": {
+            "$ref": "#/backend/entities/Task"
+          },
+          "description": "Stores task data for individual users. Tasks are secured by path-based ownership, ensuring only the authenticated user can access tasks under their ID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "taskId",
+              "description": "The unique identifier for the task."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to ensure secure and efficient data management for the TaskMaster application.  The primary principle is Authorization Independence, achieved by storing tasks under user-specific paths, thus eliminating the need for `get()` calls in security rules. This structure directly supports the QAP (Rules are not Filters) principle by ensuring that listing tasks is always scoped to a specific user, enabling secure and efficient queries.\n\nSpecifically, all tasks for a user are stored under `/users/{userId}/tasks/{taskId}`.  This design means ownership is implicitly defined by the path itself, enforcing that only the authenticated user (`request.auth.uid`) can access tasks under their respective user ID."
+  }
+}

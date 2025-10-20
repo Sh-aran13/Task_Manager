@@ -1,0 +1,70 @@
+/**
+ * @file Firestore Security Rules for TaskMaster application.
+ *
+ * @core_philosophy This ruleset enforces a strict user-ownership model for tasks.
+ *  Each user can only access tasks that are stored under their own user ID.
+ *
+ * @data_structure All task data is nested under /users/{userId}/tasks/{taskId}.
+ *
+ * @key_security_decisions
+ *   - User listing is disallowed for privacy.
+ *   - Only the authenticated user can create, read, update, or delete tasks under their own user ID.
+ *
+ * @denormalization_for_authorization
+ *   - The user ID is implicitly denormalized into the path for each task, avoiding the need for `get()` calls to verify ownership.
+ *
+ * @structural_segregation N/A
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Manages access control for task documents.
+     * @path /users/{userId}/tasks/{taskId}
+     * @allow (create) - Authenticated user creates a new task under their user ID.
+     *    - Request: auth.uid = "user_abc", request.resource.data.id = "user_abc", path = "/users/user_abc/tasks/task_123"
+     * @allow (get) - Authenticated user retrieves a task under their user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_abc/tasks/task_123"
+     * @allow (list) - Authenticated user lists tasks under their user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_abc/tasks"
+     * @allow (update) - Authenticated user updates a task under their user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_abc/tasks/task_123"
+     * @allow (delete) - Authenticated user deletes a task under their user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_abc/tasks/task_123"
+     * @deny (create) - Authenticated user attempts to create a task under another user ID.
+     *    - Request: auth.uid = "user_abc", request.resource.data.id = "user_def", path = "/users/user_def/tasks/task_123"
+     * @deny (get) - Authenticated user attempts to retrieve a task under another user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_def/tasks/task_123"
+     * @deny (list) - Authenticated user attempts to list tasks under another user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_def/tasks"
+     * @deny (update) - Authenticated user attempts to update a task under another user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_def/tasks/task_123"
+     * @deny (delete) - Authenticated user attempts to delete a task under another user ID.
+     *    - Request: auth.uid = "user_abc", path = "/users/user_def/tasks/task_123"
+     * @principle Enforces document ownership and relational integrity for task data.
+     */
+    match /users/{userId}/tasks/{taskId} {
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the user is the owner of the resource
+      function isOwner(userId) {
+        return isSignedIn() && request.auth.uid == userId;
+      }
+
+      // Helper function to check if the user is the owner of the existing resource
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
