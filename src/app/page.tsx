@@ -10,14 +10,6 @@ export default function Home() {
           <AppLogo className="h-7 w-7" />
           <h1 className="text-xl font-bold tracking-tight">React TaskMaster</h1>
         </div>
-        <div className="space-x-2">
-            <Button asChild>
-              <Link href="/login">Login</Link>
-            </Button>
-            <Button asChild variant="secondary">
-              <Link href="/register">Register</Link>
-            </Button>
-        </div>
       </header>
       <main className="flex-grow flex flex-col items-center justify-center p-4">
         <h2 className="text-4xl font-bold tracking-tight mb-4 sm:text-5xl md:text-6xl text-primary-foreground">
@@ -28,10 +20,7 @@ export default function Home() {
         </p>
         <div className="space-x-4">
           <Button asChild size="lg">
-            <Link href="/register">Get Started</Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="bg-transparent text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary">
-            <Link href="/login">Sign In</Link>
+            <Link href="/login">Get Started</Link>
           </Button>
         </div>
       </main>
