@@ -8,8 +8,8 @@ export async function getAIDescription(taskTitle: string): Promise<{ detailedDes
   }
 
   try {
-    const result = await generateDetailedTaskDescription({ taskTitle });
-    return result;
+    const description = await generateDetailedTaskDescription({ taskTitle });
+    return { detailedDescription: description };
   } catch (error) {
     console.error('AI description generation failed:', error);
     return { error: 'Failed to generate AI description. Please try again.' };

@@ -5,11 +5,11 @@
  *
  * - generateDetailedTaskDescription - A function that generates a detailed task description.
  * - GenerateDetailedTaskDescriptionInput - The input type for the generateDetailedTaskDescription function.
- * - GenerateDetailedTaskDescriptionOutput - The output type for the generateDetailedTaskDescription function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {generate} from 'genkit/ai';
 
 const GenerateDetailedTaskDescriptionInputSchema = z.object({
   taskTitle: z.string().describe('The title of the task.'),
@@ -17,37 +17,21 @@ const GenerateDetailedTaskDescriptionInputSchema = z.object({
 
 export type GenerateDetailedTaskDescriptionInput = z.infer<typeof GenerateDetailedTaskDescriptionInputSchema>;
 
-const GenerateDetailedTaskDescriptionOutputSchema = z.object({
-  detailedDescription: z.string().describe('A detailed description of the task.'),
-});
-
-export type GenerateDetailedTaskDescriptionOutput = z.infer<typeof GenerateDetailedTaskDescriptionOutputSchema>;
 
 export async function generateDetailedTaskDescription(
   input: GenerateDetailedTaskDescriptionInput
-): Promise<GenerateDetailedTaskDescriptionOutput> {
-  return generateDetailedTaskDescriptionFlow(input);
-}
+): Promise<string> {
+  const llmResponse = await generate({
+    model: 'googleai/gemini-2.5-flash',
+    prompt: `You are an AI assistant that generates detailed descriptions for tasks based on their titles.
 
-const prompt = ai.definePrompt({
-  name: 'generateDetailedTaskDescriptionPrompt',
-  input: {schema: GenerateDetailedTaskDescriptionInputSchema},
-  output: {schema: GenerateDetailedTaskDescriptionOutputSchema},
-  prompt: `You are an AI assistant that generates detailed descriptions for tasks based on their titles.
-
-  Task Title: {{{taskTitle}}}
+  Task Title: ${input.taskTitle}
 
   Detailed Description:`,
-});
+    output: {
+      format: 'text',
+    },
+  });
 
-const generateDetailedTaskDescriptionFlow = ai.defineFlow(
-  {
-    name: 'generateDetailedTaskDescriptionFlow',
-    inputSchema: GenerateDetailedTaskDescriptionInputSchema,
-    outputSchema: GenerateDetailedTaskDescriptionOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
-  }
-);
+  return llmResponse.output() || '';
+}
