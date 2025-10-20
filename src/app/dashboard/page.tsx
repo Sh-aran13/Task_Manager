@@ -115,7 +115,7 @@ export default function DashboardPage() {
                 </div>
             </div>
         </header>
-        <main className="flex-1 overflow-y-auto bg-background">
+        <main className="flex-1 overflow-y-auto bg-background animated-gradient animate-background-pan">
             <TaskManager />
         </main>
      </div>
