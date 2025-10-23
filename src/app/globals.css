@@ -76,7 +76,7 @@ body {
   }
 
   .animated-gradient-auth {
-    background: linear-gradient(-45deg, #020617, #111827, #1e3a8a, #3b0764, #020617);
+    background: linear-gradient(-45deg, #020617, #1e3a8a, #4c1d95, #3b0764, #020617);
     background-size: 400% 400%;
   }
 
