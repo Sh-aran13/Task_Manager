@@ -1,6 +1,8 @@
 # React TaskMaster
 
 React TaskMaster is a modern, full-stack task management application built with Next.js and Firebase. It features a sleek, responsive user interface, real-time data synchronization, and AI-powered features to enhance productivity. Users can manage their tasks through a simple and intuitive interface, with all data securely stored and managed by Firebase.
+
+
 Live at: https://taskmanagerapp-nu.vercel.app/
 
 ## Features
